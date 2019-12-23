@@ -3,6 +3,7 @@ This is where I'll post the code for my renderer developed on the Physically Bas
 
 # Commit Log
 1. Renderer engine to output images.
+2. Added the vec3 class.
 
 # References
 Although the professor has offered a template to be used throught this class, I'll be creating a Raytracer/Path Tracer from scratch following the three mini books written by Peter Shirley:
