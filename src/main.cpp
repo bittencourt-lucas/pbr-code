@@ -1,34 +1,31 @@
 #include <iostream>
 #include <iomanip>
 #include <fstream>
+#include "../header/vec3.hpp"
 #include "../header/ray.hpp"
+#include "../header/sphere.hpp"
+#include "../header/triangle.hpp"
+#include "../header/hittable.hpp"
+#include "../header/hittable_list.hpp"
 
-// This function uses the equation of the sphere to calculate whether the
-// ray hits a hardcoded sphere or not
-bool hit_sphere(const vec3& center, float radius, const ray& r) {
-  // t^2*dot(B,B) + 2t*dot(B,A-C) + dot(A-C, A-C) - R^2 = 0
-  vec3 oc = r.origin() - center;
-  float a = dot(r.direction(), r.direction());
-  float b = 2.0 * dot(oc, r.direction());
-  float c = dot(oc, oc) - radius * radius;
-  float discriminant = b * b - 4 * a * c;
-  return (discriminant > 0);
-}
-
-vec3 color(const ray& r) {
-  vec3 unit_direction = unit_vector(r.direction());
-  float t = 0.5 * (unit_direction.y() + 1.0);
-  // Checks the ray is hitting the sphere
-  if (hit_sphere(vec3(0, 0, -1), 0.5, r))
-    return vec3(1.0, 0.0, 0.0);
-  // Background color with Linear Interpolation
-  // blendedValue = (1 - t) * startValue + t * endValue
-  return (1.0 - t) * vec3(1.0, 1.0, 1.0) + t * vec3(0.5, 0.7, 1.0);
+vec3 color(const ray& r, hittable *world) {
+  hit_record rec;
+  if (world->hit(r, 0.0, MAXFLOAT, rec)) {
+    return 0.5 * vec3(rec.normal.x() + 1,
+                      rec.normal.y() + 1,
+                      rec.normal.z() + 1);
+  } else {
+    vec3 unit_direction = unit_vector(r.direction());
+    float t = 0.5 * (unit_direction.y() + 1.0);
+    // Background color with Linear Interpolation
+    // blendedValue = (1 - t) * startValue + t * endValue
+    return (1.0 - t) * vec3(1.0, 1.0, 1.0) + t * vec3(0.5, 0.7, 1.0);
+  }
 }
 
 int main() {
   // Image resolution
-  int nx = 1600;
+  int nx = 800;
   int ny = 800;
 
   // Save the rendered image to a .ppm file
@@ -48,9 +45,16 @@ int main() {
   rendering_file << "P3\n" << nx << " " << ny << "\n255\n";
 
   vec3 lower_left_corner(-2.0, -1.0, -1.0);
-  vec3 horizontal(4.0, 0.0, 0.0);
-  vec3 vertical(0.0, 2.0, 0.0);
-  vec3 origin(0.0, 0.0, 0.0);
+  vec3 horizontal(3.0, 0.0, 0.0);
+  vec3 vertical(0.0, 3.0, 0.0);
+  vec3 origin(1.0, 0.0, 1.0);
+
+  int n = 3;
+  hittable *list[n];
+  list[0] = new sphere(vec3(0,0,-1), 0.5);
+  list[1] = new triangle(vec3(0.0, 0.0, 0.0), vec3(1.0, 0.0, 0.0), vec3(0.0, 1.0, 0.0));
+  list[2] = new sphere(vec3(0,-100.5,-1), 100);
+  hittable *world = new hittable_list(list, n);
 
   for (int j = ny - 1; j >= 0; j--) {
     for (int i = 0; i < nx; i++) {
@@ -58,7 +62,9 @@ int main() {
       float u = float(i) / float(nx);
       float v = float(j) / float(ny);
       ray r(origin, lower_left_corner + u * horizontal + v * vertical);
-      vec3 col = color(r);
+
+      vec3 p = r.point_at_parameter(2.0);
+      vec3 col = color(r, world);
 
       int ir = int(255.99 * col[0]);
       int ig = int(255.99 * col[1]);

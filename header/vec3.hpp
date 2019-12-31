@@ -1,3 +1,6 @@
+#ifndef VEC3HPP
+#define VEC3HPP
+
 #include <iostream>
 #include <math.h>
 #include <stdlib.h>
@@ -144,3 +147,5 @@ inline vec3 cross(const vec3 &v1, const vec3 &v2) {
 inline vec3 unit_vector(vec3 v) {
   return v / v.len();
 }
+
+#endif // !VEC3HPP
