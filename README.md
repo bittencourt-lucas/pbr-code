@@ -1,18 +1,26 @@
-# This repository
-This is where I'll post the code for my renderer developed on the Physically Based Rendering class, offered by professor PhD Christian Azambuja Pagot at Universidade Federal da Paraíba, Brazil. This project will start as a Raytracer and evolve into a Path Tracer as the class progresses.
+# RT-Template
 
-# Commit Log
-1. Renderer engine to output images.
-2. Added the vec3 class.
-3. Added raytracing and a simple camera.
-4. Added a simple sphere.
+A very simple C++11 template code for the development of ray tracers.
 
-# References
-Although the professor has offered a template to be used throught this class, I'll be creating a Raytracer/Path Tracer from scratch following the three mini books written by Peter Shirley:
-* Ray Tracing In One Weekend
-* Ray Tracing The Next Weekend
-* Ray Tracing The Rest Of Your Life
+# Dependencies
 
-All of which are available for free online in [this link](https://raytracing.github.io/).
+This software depends on the following third party software to be compiled:
 
-My professor's template can be found [here](https://github.com/capagot/RT-Template).
+- glm version 0.9.7.0 or later (http://glm.g-truc.net).
+
+# Compiling and Running
+
+I've compiled and executed this software only in Linux (Ubuntu 14.04).
+These are the steps needed in order to compile the program:
+
+1. Install the dependencies (i.e. glm).
+2. Download the source code together with the Makefile.
+3. Open the Makefile with a text editor (e.g. vim, gedit, etc.).
+4. Configure the variables CPPFLAGS and LDFLAGS in order to reflect your glm installations.
+5. Save the Makefile.
+6. Call 'make DEBUG=0' at the project root directory.
+7. Done
+
+To render the hardcoded scene, just issue the following command from the project root directory: 
+
+    $ ./pbr
