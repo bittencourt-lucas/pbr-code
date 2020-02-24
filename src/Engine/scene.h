@@ -6,6 +6,11 @@
 #include <memory>
 #include <vector>
 #include <glm/glm.hpp>
+#include <unordered_map>
+
+#include "assimp/Importer.hpp"
+#include "assimp/postprocess.h"
+#include "assimp/scene.h"
 
 #include "../Primitives/primitive.h"
 #include "../Primitives/sphere.h"
@@ -23,6 +28,8 @@ public:
                     IntersectionRecord &intersection_record ) const;
 
     void load( void );
+
+    void load( const std::string& );
 
     std::vector< Primitive::PrimitiveUniquePtr > primitives_;
 

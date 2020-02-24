@@ -35,3 +35,28 @@ void Scene::load( void )
                                             glm::vec3 { 0.5f, 0.0f, 0.0f }, glm::vec3 { 0.0f, 0.0f, 0.0f } } ) );
 }
 
+void Scene::load(const std::string& filename) {
+    Assimp::Importer assimp_importer;
+    const aiScene* assimp_scene_ =
+        assimp_importer.ReadFile(filename, aiProcess_FindDegenerates | aiProcess_Triangulate);
+
+    if (!assimp_scene_) throw std::runtime_error(assimp_importer.GetErrorString());
+
+    if (assimp_scene_->HasMeshes()) {
+        std::unordered_map<std::string, long unsigned int>::const_iterator submeshes_it;
+
+        for (unsigned int mesh_id = 0; mesh_id < assimp_scene_->mNumMeshes; mesh_id++) {
+            const aiMesh* mesh_ptr = assimp_scene_->mMeshes[mesh_id];
+
+            for (unsigned int vertex_id = 0; vertex_id < mesh_ptr->mNumVertices; vertex_id += 3) {
+                const aiVector3D* vertex_ptr = &mesh_ptr->mVertices[vertex_id];
+
+                glm::vec3 v0(vertex_ptr[0].x, vertex_ptr[0].y, vertex_ptr[0].z);
+                glm::vec3 v1(vertex_ptr[1].x, vertex_ptr[1].y, vertex_ptr[1].z);
+                glm::vec3 v2(vertex_ptr[2].x, vertex_ptr[2].y, vertex_ptr[2].z);
+                
+                primitives_.push_back(std::make_unique<Triangle>(v0, v1, v2));
+            }
+        }
+    }
+}

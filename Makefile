@@ -1,7 +1,7 @@
 CFILES=$(shell find src -name '*.cpp')
 OFILES=$(patsubst %.cpp,%.o,$(CFILES))
 TARGET=pbr
-FLAGS=-Wall -Wextra -Wpedantic -fopenmp
+FLAGS=-Wall -Wextra -Wpedantic -fopenmp -lassimp
 -CC_FLAGS=-std=c++11
 
 $(TARGET): $(OFILES)
