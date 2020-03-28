@@ -26,7 +26,8 @@ int main( void )
     RayTracer rt( camera,
                   scene,
                   background_color,
-                  rendering_buffer );
+                  rendering_buffer,
+                  5 );
 
     rt.integrate(); // Renders the final image.
 

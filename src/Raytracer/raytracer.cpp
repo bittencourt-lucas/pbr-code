@@ -3,11 +3,13 @@
 RayTracer::RayTracer( Camera &camera,
                       const Scene &scene,
                       const glm::vec3 background_color,
-                      Buffer &buffer ) :
+                      Buffer &buffer,
+                      int samples ) :
         camera_( camera ),
         scene_( scene ),
         background_color_{ background_color },
-        buffer_( buffer )
+        buffer_( buffer ),
+        samples_( samples )
 {}
 
 void RayTracer::integrate( void )
@@ -31,15 +33,23 @@ void RayTracer::integrate( void )
         // Loops over image columns
         for ( std::size_t x = 0; x < buffer_.h_resolution_; x++ )
         {
-           intersection_record.t_ = std::numeric_limits< double >::max();
+            intersection_record.t_ = std::numeric_limits< double >::max();
+            glm::vec3 antialiasing(.0f, .0f,.0f);
 
-            Ray ray{ camera_.getWorldSpaceRay( glm::vec2{ x + 0.5f, y + 0.5f } ) };
+            for ( std::size_t i = 0; i < samples_; i++) {
+                std::random_device rd;
+                std::mt19937 gen(rd());
+                std::uniform_real_distribution<> dis(0, 1);//uniform distribution between 0 and 1
 
-            if ( scene_.intersect( ray, intersection_record ) ) {
-                //buffer_.buffer_data_[x][y] = glm::vec3{ 1.0f, 0.0f, 0.0f };
-                glm::vec3 N{ glm::normalize((ray.origin_ + intersection_record.t_ * ray.direction_) - glm::vec3{ 0.0f, 0.0f, -1.0f }) };
-                buffer_.buffer_data_[x][y] = 0.5f * glm::vec3{ N.x + 1.0f, N.y + 1.0f, N.z + 1.0f };
+                Ray ray{ camera_.getWorldSpaceRay( glm::vec2{ x + dis(gen), y + dis(gen) } ) };
+
+                if ( scene_.intersect( ray, intersection_record ) ) {
+                    //buffer_.buffer_data_[x][y] = glm::vec3{ 1.0f, 0.0f, 0.0f };
+                    glm::vec3 N{ glm::normalize((ray.origin_ + intersection_record.t_ * ray.direction_) - glm::vec3{ 0.0f, 0.0f, -1.0f }) };
+                    antialiasing = antialiasing + intersection_record.t_ + N;
+                }
             }
+            buffer_.buffer_data_[x][y] = glm::vec3{ antialiasing.x / samples_, antialiasing.y / samples_, antialiasing.z / samples_ };
         }
     }
 

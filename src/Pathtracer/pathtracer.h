@@ -1,24 +1,22 @@
-#ifndef RAYTRACER_H_
-#define RAYTRACER_H_
+#ifndef PATHTRACER_H_
+#define PATHTRACER_H_
 
 #include <sstream>
 #include <iomanip>
 #include <cmath>
-#include <random>
 
 #include "../Camera/camera.h"
 #include "../Engine/scene.h"
 #include "../Engine/buffer.h"
 
-class RayTracer
+class PathTracer
 {
 public:
 
-    RayTracer( Camera &camera,
+    PathTracer( Camera &camera,
                const Scene &scene,
                const glm::vec3 background_color,
-               Buffer &buffer,
-               int samples );
+               Buffer &buffer );
 
     void integrate( void );
 
@@ -32,9 +30,7 @@ private:
 
     Buffer &buffer_;
 
-    int samples_;
-
 };
 
-#endif /* RAYTRACER_H_ */
+#endif /* PATHTRACER_H_ */
 
