@@ -13,6 +13,16 @@ Triangle::Triangle( const glm::vec3 &v1,
         v3_{ v3 }
 {}
 
+Triangle::Triangle( const glm::vec3 &v1,
+                    const glm::vec3 &v2,
+                    const glm::vec3 &v3,
+                    const glm::vec3 &brdf,
+                    const glm::vec3 &emittance ) :
+        v1_{ v1 },
+        v2_{ v2 },
+        v3_{ v3 }
+{}
+
 bool Triangle::intersect( const Ray &ray,
                         IntersectionRecord &inter_rec ) const
 {
@@ -65,6 +75,9 @@ bool Triangle::intersect( const Ray &ray,
     inter_rec.t_ = t;
     inter_rec.position_ = ray.origin_ + (t * ray.direction_);
     inter_rec.normal_ = glm::normalize(glm::cross(v2_ - v1_, v3_ - v1_));
+    inter_rec.brdf_ = brdf_ / ((float) M_PI);
+    inter_rec.emittance_ = emittance_;
+
     if (glm::dot(inter_rec.normal_, ray.direction_) > 0.0f)
         inter_rec.normal_ = -inter_rec.normal_;
     
