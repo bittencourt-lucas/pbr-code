@@ -20,7 +20,9 @@ Triangle::Triangle( const glm::vec3 &v1,
                     const glm::vec3 &emittance ) :
         v1_{ v1 },
         v2_{ v2 },
-        v3_{ v3 }
+        v3_{ v3 },
+        brdf_{ brdf },
+        emittance_{ emittance }
 {}
 
 bool Triangle::intersect( const Ray &ray,

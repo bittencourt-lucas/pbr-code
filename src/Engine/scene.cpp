@@ -37,12 +37,46 @@ bool Scene::intersect( const Ray &ray,
 
 void Scene::load( void ) 
 {
-    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ glm::vec3{  0.0f, 0.0f,  0.0f }, 0.2f, glm::vec3 { .0f }, glm::vec3 { 300.0f } } ) );
-    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ glm::vec3{ -0.5f, 0.0f, -1.0f }, 0.2f, glm::vec3 { .2f }, glm::vec3 { .0f } } ) );
-    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ glm::vec3{  0.0f,-0.5f, -2.0f }, 0.2f, glm::vec3 { .2f }, glm::vec3 { .0f } } ) );
-    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ glm::vec3{  0.0f, 0.5f, -3.0f }, 0.2f, glm::vec3 { .2f }, glm::vec3 { .0f } } ) );
-    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Triangle{ glm::vec3 { 0.25f, 0.5f, -1.0f },
-                                            glm::vec3 { 0.5f, 0.0f, 0.0f }, glm::vec3 { 0.0f, 0.0f, 0.0f }, glm::vec3 { .2f }, glm::vec3 { .0f } } ) );
+    // Pathtracer Default Scene: Cornell Box With Spheres
+    // Spheres
+    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ glm::vec3{ -0.5f, -0.65f, -1.5f }, 0.4f, glm::vec3 { 0.725f, 0.71f, 0.68f }, glm::vec3 { .0f } } ) );
+    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ glm::vec3{ 0.6f, -0.65f, -1.8f }, 0.4f, glm::vec3 { 0.725f, 0.71f, 0.68f }, glm::vec3 { .0f } } ) );
+
+    // Back
+    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Triangle{ glm::vec3 { 1.2f, -1.2f, -2.5f },
+                                            glm::vec3 { -1.2f, 1.2f, -2.5f }, glm::vec3 { -1.2f, -1.2f, -2.5f }, glm::vec3 { 0.725f, 0.71f, 0.68f }, glm::vec3 { .0f } } ) );
+    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Triangle{ glm::vec3 { 1.2f, -1.2f, -2.5f },
+                                            glm::vec3 { 1.2f, 1.2f, -2.5f }, glm::vec3 { -1.2f, 1.2f, -2.5f }, glm::vec3 { 0.725f, 0.71f, 0.68f }, glm::vec3 { .0f } } ) );
+
+    // Floor
+    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Triangle{ glm::vec3 { -1.2f, -1.2f, -2.5f },
+                                            glm::vec3 { 1.2f, -1.2f, -2.5f }, glm::vec3 { -1.2f, -1.0f, -1.0f }, glm::vec3 { 0.725f, 0.71f, 0.68f }, glm::vec3 { .0f } } ) );
+    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Triangle{ glm::vec3 { -1.2f, -1.0f, -1.0f },
+                                            glm::vec3 { 1.2f, -1.2f, -2.5f }, glm::vec3 { 1.2f, -1.0f, -1.0f }, glm::vec3 { 0.725f, 0.71f, 0.68f }, glm::vec3 { .0f } } ) );    
+
+    // Left Wall
+    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Triangle{ glm::vec3 { -1.2f, -1.2f, -2.5f },
+                                            glm::vec3 { -1.2f, -1.0f, -1.0f }, glm::vec3 { -1.2f, 1.2f, -2.5f }, glm::vec3 { 0.14f, 0.45f, 0.091f }, glm::vec3 { .0f } } ) );
+    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Triangle{ glm::vec3 { -1.2f, 1.2f, -2.5f },
+                                            glm::vec3 { -1.2f, -1.0f, -1.0f }, glm::vec3 { -1.2f, 1.2f, -1.0f }, glm::vec3 { 0.14f, 0.45f, 0.091f }, glm::vec3 { .0f } } ) );    
+
+    // Right Wall
+    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Triangle{ glm::vec3 { 1.2f, 1.2f, -1.0f },
+                                            glm::vec3 { 1.2f, -1.0f, -1.0f }, glm::vec3 { 1.2f, 1.2f, -2.5f }, glm::vec3 { 0.63f, 0.065f, 0.05f }, glm::vec3 { .0f } } ) );
+    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Triangle{ glm::vec3 { 1.2f, 1.2f, -2.5f },
+                                            glm::vec3 { 1.2f, -1.0f, -1.0f }, glm::vec3 { 1.2f, -1.2f, -2.5f }, glm::vec3 { 0.63f, 0.065f, 0.05f }, glm::vec3 { .0f } } ) );    
+
+    // Ceiling
+    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Triangle{ glm::vec3 { -1.2f, 1.2f, -1.0f },
+                                            glm::vec3 { -1.2f, 1.2f, -2.5f }, glm::vec3 { 1.2f, 1.2f, -2.5f }, glm::vec3 { 0.725f, 0.71f, 0.68f }, glm::vec3 { .0f } } ) );
+    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Triangle{ glm::vec3 { 1.2f, 1.2f, -2.5f },
+                                            glm::vec3 { 1.2f, 1.2f, -1.0f }, glm::vec3 { -1.2f, 1.2f, -1.0f }, glm::vec3 { 0.725f, 0.71f, 0.68f }, glm::vec3 { .0f } } ) );    
+
+    // Light Source
+    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Triangle{ glm::vec3 { -0.5f, 1.19f, -1.5f },
+                                            glm::vec3 { -0.5f, 1.19f, -2.0f }, glm::vec3 { 0.5f, 1.19f, -2.0f }, glm::vec3 { .0f }, glm::vec3 { 30.0f } } ) );
+    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Triangle{ glm::vec3 { 0.5f, 1.19f, -2.0f },
+                                            glm::vec3 { 0.5f, 1.19f, -1.5f }, glm::vec3 { -0.5f, 1.19f, -1.5f }, glm::vec3 { .0f }, glm::vec3 { 30.0f } } ) );
 }
 
 void Scene::load(const std::string& filename) {
