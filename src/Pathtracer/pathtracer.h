@@ -5,6 +5,7 @@
 #include <iomanip>
 #include <cmath>
 
+#include <omp.h>
 #include <glm/glm.hpp>
 
 #include "../Camera/camera.h"

@@ -8,7 +8,7 @@ $(TARGET): $(OFILES)
 		g++ -o $(TARGET) $(OFILES) $(FLAGS)
 
 %.o: %.cpp
-		g++ $(CC_FLAGS) -o $@ -c $<
+		g++ $(CC_FLAGS) -o $@ -c $< -fopenmp
 
 clean:
 		rm -rf $(TARGET) $(OFILES)

@@ -22,6 +22,7 @@ void PathTracer::integrate( void )
     // Image space origin (i.e. x = 0 and y = 0) at the top left corner.
 
     // Loops over image rows
+    #pragma omp parallel for schedule(dynamic, 1) private(intersection_record)
     for ( std::size_t y = 0; y < buffer_.v_resolution_; y++ )
     {
         std::stringstream progress_stream;

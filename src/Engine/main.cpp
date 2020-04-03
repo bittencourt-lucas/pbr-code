@@ -36,7 +36,7 @@ int main( void )
                    scene,
                    background_color,
                    rendering_buffer,
-                   (size_t)10000,
+                   (size_t)300,
                    (size_t)3 );
 
     pt.integrate(); // Renders the final image.
