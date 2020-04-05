@@ -5,6 +5,7 @@
 
 #include "../Engine/ray.h"
 #include "../Engine/intersection_record.h"
+#include "../Acceleration/bounding_box.h"
 
 class Primitive
 {
@@ -18,6 +19,8 @@ public:
 
     virtual bool intersect( const Ray &ray,
                             IntersectionRecord &intersection_record ) const = 0;
+
+    virtual BoundingBox getAABB( void ) const = 0;
 };
 
 #endif /* PRIMITIVE_H_ */

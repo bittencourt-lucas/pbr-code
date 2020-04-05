@@ -6,6 +6,7 @@
 #include "../Primitives/primitive.h"
 #include "../Engine/intersection_record.h"
 #include "../Engine/ray.h"
+#include "../Acceleration/bounding_box.h"
 
 class Triangle : public Primitive
 {
@@ -26,6 +27,8 @@ public:
 
     bool intersect( const Ray &ray,
                     IntersectionRecord &intersection_record ) const;
+
+    BoundingBox getAABB( void ) const;
 
     glm::vec3 v1_ = { 0.0f, 0.0f, 0.0f };
     glm::vec3 v2_ = { 0.0f, 0.0f, 0.0f };

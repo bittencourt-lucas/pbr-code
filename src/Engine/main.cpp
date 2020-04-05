@@ -23,6 +23,9 @@ int main( void )
     //scene.load("/home/lbittencourt/Documentos/Universidade/pbr-code/assets/seahorse.obj", glm::vec3 { 0.63f, 0.065f, 0.05f }, glm::vec3 { .0f }, "diffuse");
     scene.load("/home/lbittencourt/Documentos/Universidade/pbr-code/assets/mirror.obj", glm::vec3 { 1.0f }, glm::vec3 { .0f }, "mirror");
 
+    scene.acceleration_structure_ = scene.BVH_ACCELERATION;
+    scene.buildAccelerationStructure();
+
     Buffer rendering_buffer{ x_resolution, y_resolution };
     glm::vec3 background_color{ 0.0f, 0.0f, 0.0f };
 
@@ -40,7 +43,7 @@ int main( void )
                    scene,
                    background_color,
                    rendering_buffer,
-                   (size_t)500,
+                   (size_t)25,
                    (size_t)3 );
 
     pt.integrate(); // Renders the final image.

@@ -60,3 +60,12 @@ bool Sphere::intersect( const Ray &ray,
     return true;
 }
 
+BoundingBox Sphere::getAABB( void ) const
+{
+    BoundingBox aabb;
+
+    aabb.min_ = center_ - radius_;
+    aabb.max_ = center_ + radius_;
+    aabb.centroid_ = center_;
+    return aabb;
+}

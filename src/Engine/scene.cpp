@@ -4,7 +4,13 @@ Scene::Scene( void )
 {}
 
 Scene::~Scene( void )
-{}
+{
+    if ( bvh_ )
+    {
+        delete bvh_;
+        bvh_ = nullptr;
+    }
+}
 
 bool Scene::intersect( const Ray &ray,
                        IntersectionRecord &intersection_record ) const
@@ -13,14 +19,23 @@ bool Scene::intersect( const Ray &ray,
     IntersectionRecord tmp_intersection_record;
     std::size_t num_primitives = primitives_.size();
 
-    // Loops over the list of primitives, testing the intersection of each primitive against the given ray 
-    for ( std::size_t primitive_id = 0; primitive_id < num_primitives; primitive_id++ )
-        if ( primitives_[primitive_id]->intersect( ray, tmp_intersection_record ) )
-            if ( ( tmp_intersection_record.t_ < intersection_record.t_ ) && ( tmp_intersection_record.t_ > 0.0 ) )
-            {
-                intersection_record = tmp_intersection_record;
-                intersection_result = true; // the ray intersects a primitive!
-            }
+    switch( acceleration_structure_ )
+    {
+        case AccelerationStructure::NONE:
+            // Loops over the list of primitives, testing the intersection of each primitive against the given ray 
+            for ( std::size_t primitive_id = 0; primitive_id < num_primitives; primitive_id++ )
+                if ( primitives_[primitive_id]->intersect( ray, tmp_intersection_record ) )
+                    if ( ( tmp_intersection_record.t_ < intersection_record.t_ ) && ( tmp_intersection_record.t_ > 0.0 ) )
+                    {
+                        intersection_record = tmp_intersection_record;
+                        intersection_result = true; // the ray intersects a primitive!
+                    }
+            break;
+        
+        case AccelerationStructure::BVH_ACCELERATION:
+            intersection_result = bvh_->intersect( ray, intersection_record );
+            break;
+    }
 
     return intersection_result;
 }
@@ -103,4 +118,18 @@ void Scene::load(const std::string& filename, glm::vec3 brdf, glm::vec3 emmitanc
             }
         }
     }
+}
+
+void Scene::buildAccelerationStructure( void )
+{
+    if ( acceleration_structure_ == Scene::AccelerationStructure::BVH_ACCELERATION )
+    {
+        buildBVH();
+        std::clog << std::endl;
+    }
+}
+
+void Scene::buildBVH( void )
+{
+    bvh_ = new BVH( primitives_ );
 }
