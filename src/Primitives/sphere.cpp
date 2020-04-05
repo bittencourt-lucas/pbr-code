@@ -12,11 +12,13 @@ Sphere::Sphere( const glm::vec3 &center,
 Sphere::Sphere( const glm::vec3 &center,
                 float radius,
                 const glm::vec3& brdf,
-                const glm::vec3& emittance ) :
+                const glm::vec3& emittance,
+                std::string material ) :
         center_{ center },
         radius_{ radius },
         brdf_{ brdf },
-        emittance_{ emittance }
+        emittance_{ emittance },
+        material_{ material }
 {}
 
 bool Sphere::intersect( const Ray &ray,
@@ -53,6 +55,7 @@ bool Sphere::intersect( const Ray &ray,
     intersection_record.normal_ = glm::normalize( intersection_record.position_ - center_ );
     intersection_record.brdf_ = brdf_ / ((float) M_PI);
     intersection_record.emittance_ = emittance_;
+    intersection_record.material_ = material_;
 
     return true;
 }

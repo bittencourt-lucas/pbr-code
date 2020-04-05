@@ -9,15 +9,19 @@ int main( void )
                             1.25f, 
                             -1.25f, 
                             1.25f,
-                            2.0f,
+                            5.0f,
                             glm::ivec2{ x_resolution, y_resolution }, 
-                            glm::vec3{ 0.0f, 0.0f,  1.0f },     // position
+                            glm::vec3{ 7.3589f, 6.9258f,  4.9583f },     // position
                             glm::vec3{ 0.0f, 1.0f,  0.0f },     // up
-                            glm::vec3{ 0.0f, 0.0f, -1.0f } };   // look at
+                            glm::vec3{ 0.636f, 0.0f, 0.467f } };   // look at
     Scene scene{};
     
-    scene.load();
-    // scene.load("/home/lbittencourt/Documentos/Universidade/pbr-code/assets/monkey.obj");
+    // scene.load();
+    scene.load("/home/lbittencourt/Documentos/Universidade/pbr-code/assets/room.obj", glm::vec3 { 0.725f, 0.71f, 0.68f }, glm::vec3 { .0f }, "diffuse");
+    scene.load("/home/lbittencourt/Documentos/Universidade/pbr-code/assets/light.obj", glm::vec3 { 0.725f, 0.71f, 0.68f }, glm::vec3 { 50.0f }, "diffuse");
+    //scene.load("/home/lbittencourt/Documentos/Universidade/pbr-code/assets/suzanne.obj", glm::vec3 { 0.14f, 0.45f, 0.091f }, glm::vec3 { .0f }, "diffuse");
+    //scene.load("/home/lbittencourt/Documentos/Universidade/pbr-code/assets/seahorse.obj", glm::vec3 { 0.63f, 0.065f, 0.05f }, glm::vec3 { .0f }, "diffuse");
+    scene.load("/home/lbittencourt/Documentos/Universidade/pbr-code/assets/mirror.obj", glm::vec3 { 1.0f }, glm::vec3 { .0f }, "mirror");
 
     Buffer rendering_buffer{ x_resolution, y_resolution };
     glm::vec3 background_color{ 0.0f, 0.0f, 0.0f };
@@ -36,7 +40,7 @@ int main( void )
                    scene,
                    background_color,
                    rendering_buffer,
-                   (size_t)300,
+                   (size_t)500,
                    (size_t)3 );
 
     pt.integrate(); // Renders the final image.

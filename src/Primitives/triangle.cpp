@@ -17,12 +17,14 @@ Triangle::Triangle( const glm::vec3 &v1,
                     const glm::vec3 &v2,
                     const glm::vec3 &v3,
                     const glm::vec3 &brdf,
-                    const glm::vec3 &emittance ) :
+                    const glm::vec3 &emittance,
+                    std::string material ) :
         v1_{ v1 },
         v2_{ v2 },
         v3_{ v3 },
         brdf_{ brdf },
-        emittance_{ emittance }
+        emittance_{ emittance },
+        material_{ material }
 {}
 
 bool Triangle::intersect( const Ray &ray,
@@ -79,6 +81,7 @@ bool Triangle::intersect( const Ray &ray,
     inter_rec.normal_ = glm::normalize(glm::cross(v2_ - v1_, v3_ - v1_));
     inter_rec.brdf_ = brdf_ / ((float) M_PI);
     inter_rec.emittance_ = emittance_;
+    inter_rec.material_ = material_;
 
     if (glm::dot(inter_rec.normal_, ray.direction_) > 0.0f)
         inter_rec.normal_ = -inter_rec.normal_;

@@ -29,7 +29,7 @@ public:
 
     void load( void );
 
-    void load( const std::string& );
+    void load( const std::string&, glm::vec3, glm::vec3, std::string );
 
     std::vector< Primitive::PrimitiveUniquePtr > primitives_;
 

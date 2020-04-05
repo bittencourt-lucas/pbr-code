@@ -63,18 +63,25 @@ glm::vec3 PathTracer::radiance( Ray& ray, int curr_depth )
     {
         if ( scene_.intersect( ray, inter_rec ) )
         {
-            refl_ray = get_new_ray( inter_rec );
+            if (inter_rec.material_ == "diffuse") {
+                refl_ray = get_new_ray_diffuse( inter_rec );
 
-            Lo = inter_rec.emittance_ + 2.0f * (float)M_PI *
-                inter_rec.brdf_ * radiance( refl_ray, ++curr_depth ) *
-                glm::dot(inter_rec.normal_, refl_ray.direction_ );
+                Lo = inter_rec.emittance_ + 2.0f * (float)M_PI *
+                    inter_rec.brdf_ * radiance( refl_ray, ++curr_depth ) *
+                    glm::dot(inter_rec.normal_, refl_ray.direction_ );
+            }
+            else if (inter_rec.material_ == "mirror") {
+                refl_ray = get_new_ray_mirror( inter_rec, ray );
+
+                Lo = radiance( refl_ray, ++curr_depth );
+            }
         }
     }
 
     return Lo;
 }
 
-Ray PathTracer::get_new_ray( IntersectionRecord inter_rec )
+Ray PathTracer::get_new_ray_diffuse( IntersectionRecord inter_rec )
 {
     float r1 = static_cast <float> ( rand( ) ) / static_cast <float> ( RAND_MAX );
     float r2 = static_cast <float> ( rand( ) ) / static_cast <float> ( RAND_MAX );
@@ -88,4 +95,16 @@ Ray PathTracer::get_new_ray( IntersectionRecord inter_rec )
     glm::vec3 spheric_to_cartesian { glm::cos(phi) * glm::sin(theta), glm::cos(theta), glm::sin(phi) * glm::sin(theta) };
 
     return Ray { inter_rec.position_ + (inter_rec.normal_ * 0.001f), onb_.getBasisMatrix() * spheric_to_cartesian };
+}
+
+Ray PathTracer::get_new_ray_mirror( IntersectionRecord inter_rec, Ray curr_ray )
+{
+    ONB onb_;
+    onb_.setFromV(inter_rec.normal_);
+
+    glm::vec3 reflect = glm::transpose(onb_.getBasisMatrix()) * curr_ray.direction_;
+
+    reflect = { reflect.x, -reflect.y, reflect.z };
+
+    return Ray { inter_rec.position_ + (inter_rec.normal_ * 0.001f), onb_.getBasisMatrix() * reflect };
 }

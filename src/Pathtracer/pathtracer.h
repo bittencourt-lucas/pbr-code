@@ -27,7 +27,9 @@ public:
 
     glm::vec3 radiance( Ray& ray, int curr_depth );
 
-    Ray get_new_ray( IntersectionRecord inter_rec );
+    Ray get_new_ray_diffuse( IntersectionRecord inter_rec );
+
+    Ray get_new_ray_mirror( IntersectionRecord inter_rec, Ray curr_ray );
 
 private:
 
