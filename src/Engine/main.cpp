@@ -2,8 +2,8 @@
 
 int main( void )
 {
-    unsigned int x_resolution = 512;
-    unsigned int y_resolution = 512;
+    unsigned int x_resolution = 2048;
+    unsigned int y_resolution = 2048;
 
     PinholeCamera camera{   -1.25f, 
                             1.25f, 
@@ -11,9 +11,9 @@ int main( void )
                             1.25f,
                             5.0f,
                             glm::ivec2{ x_resolution, y_resolution }, 
-                            glm::vec3{ 7.3589f, 6.9258f,  4.9583f },     // position
+                            glm::vec3{ 7.3589f, 5.1f,  5.4f },     // position
                             glm::vec3{ 0.0f, 1.0f,  0.0f },     // up
-                            glm::vec3{ 0.636f, 0.0f, 0.467f } };   // look at
+                            glm::vec3{ 0.9f, 0.2f, 0.467f } };   // look at
     Scene scene{};
     
     // scene.load();
