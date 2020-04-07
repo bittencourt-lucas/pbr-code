@@ -1,16 +1,24 @@
-# RT-Template
+# Physically Based Renderer with Pathtracing Algorithm
 
-A very simple C++11 template code for the development of ray tracers.
+A renderer that uses Pathtracing Algorithm to generate cool images from 3D models.
+
+Example:
+
+![First Example](outputs/finalscene.jpg)
+
+See more results obtained throughout the development of this tool here: https://github.com/bittencourt-lucas/pbr-results
 
 # Dependencies
 
 This software depends on the following third party software to be compiled:
 
 - glm version 0.9.7.0 or later (http://glm.g-truc.net).
+- assimp
+- OpenMP
 
 # Compiling and Running
 
-I've compiled and executed this software only in Linux (Ubuntu 14.04).
+I've compiled and executed this software only in Linux (Ubuntu 18.04).
 These are the steps needed in order to compile the program:
 
 1. Install the dependencies (i.e. glm).
